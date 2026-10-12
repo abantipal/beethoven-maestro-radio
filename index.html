@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beethoven Maestro Radio</title>
-    <link rel="manifest" href="data:application/manifest+json,{
-        &quot;name&quot;: &quot;Beethoven Maestro Radio&quot;,
-        &quot;short_name&quot;: &quot;Beethoven Radio&quot;,
-        &quot;start_url&quot;: &quot;.&quot;,
-        &quot;display&quot;: &quot;standalone&quot;,
-        &quot;background_color&quot;: &quot;#0f0d0c&quot;,
-        &quot;theme_color&quot;: &quot;#d4af37&quot;
-    }">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,17 +14,10 @@
             --gold-dark: #997a15;
             --text-main: #f0e6d2;
             --text-muted: #a39580;
-            --accent-red: #8b0000;
             --border-gold: rgba(212, 175, 55, 0.3);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-user-select: none;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 
         body {
             background-color: var(--bg-dark);
@@ -46,17 +31,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            overflow-x: hidden;
             padding: 20px 15px;
         }
 
-        /* Concert Hall Overlay Modal */
         #splash-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(10, 8, 7, 0.96);
             backdrop-filter: blur(12px);
             z-index: 9999;
@@ -66,31 +46,18 @@
             align-items: center;
             text-align: center;
             padding: 20px;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            transition: opacity 0.6s ease;
         }
 
-        #splash-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+        #splash-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         .splash-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             color: var(--gold-primary);
             text-transform: uppercase;
             letter-spacing: 4px;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-        }
-
-        .splash-subtitle {
-            color: var(--text-muted);
-            font-size: 1rem;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            max-width: 450px;
         }
 
         .btn-enter {
@@ -104,500 +71,165 @@
             border-radius: 40px;
             cursor: pointer;
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-            transition: all 0.3s ease;
-            letter-spacing: 2px;
-        }
-
-        .btn-enter:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 35px rgba(212, 175, 55, 0.7);
-            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 900px;
+            margin-top: 20px;
         }
 
         header h1 {
             font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--gold-primary);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            margin-bottom: 15px;
         }
 
-        header p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            margin-top: 5px;
-            text-transform: uppercase;
-        }
-
-        /* Main Container Layout */
         .app-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
         }
 
         @media (min-width: 768px) {
-            .app-container {
-                grid-template-columns: 1.2fr 0.8fr;
-            }
+            .app-container { grid-template-columns: 1.2fr 0.8fr; }
         }
 
-        /* Player Card */
-        .player-card {
+        .player-card, .queue-card, .soundboard-card {
             background: var(--bg-card);
             border: 1px solid var(--border-gold);
             border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
+            padding: 20px;
             backdrop-filter: blur(10px);
         }
 
-        /* Vinyl Stage Visualizer */
         .stage-box {
-            width: 180px;
-            height: 180px;
+            width: 150px; height: 150px;
             border-radius: 50%;
             background: radial-gradient(circle, #222 20%, #000 80%);
-            border: 4px solid var(--gold-primary);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            margin-bottom: 20px;
-            overflow: hidden;
+            border: 3px solid var(--gold-primary);
+            margin: 0 auto 15px;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Cinzel', serif; font-weight: 900; color: var(--gold-primary);
         }
 
-        .stage-box.playing {
-            animation: spinVinyl 12s linear infinite;
-        }
+        .stage-box.playing { animation: spinVinyl 12s linear infinite; }
+        @keyframes spinVinyl { 100% { transform: rotate(360deg); } }
 
-        @keyframes spinVinyl {
-            100% { transform: rotate(360deg); }
-        }
-
-        .vinyl-center {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--gold-dark);
-            border: 2px solid var(--gold-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #000;
-            font-family: 'Cinzel', serif;
-            font-weight: 900;
-            font-size: 0.9rem;
-        }
-
-        /* Visualizer Canvas overlay */
-        #visualizer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        /* Track Metadata Display */
-        .track-info {
-            text-align: center;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .track-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            color: var(--gold-light);
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .track-movement {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
+        .track-info { text-align: center; margin-bottom: 15px; }
+        .track-title { font-family: 'Cinzel', serif; color: var(--gold-light); font-size: 1.2rem; }
+        .track-movement { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
         .status-badge {
-            display: inline-block;
-            font-size: 0.75rem;
-            padding: 4px 12px;
-            border-radius: 12px;
-            background: rgba(212, 175, 55, 0.15);
-            color: var(--gold-primary);
-            border: 1px solid var(--border-gold);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            display: inline-block; font-size: 0.75rem; padding: 4px 12px;
+            border-radius: 12px; background: rgba(212, 175, 55, 0.15);
+            color: var(--gold-primary); border: 1px solid var(--border-gold);
+            margin-top: 8px; text-transform: uppercase;
         }
 
-        /* Time Slider & Progress */
-        .progress-box {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 5px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            outline: none;
-            cursor: pointer;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--gold-primary);
-            box-shadow: 0 0 10px var(--gold-primary);
-            cursor: pointer;
-        }
-
-        /* Player Controls */
-        .controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
+        .controls { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
         .btn-ctrl {
-            background: transparent;
-            border: 1px solid var(--border-gold);
-            color: var(--gold-primary);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 1rem;
+            background: transparent; border: 1px solid var(--border-gold);
+            color: var(--gold-primary); width: 44px; height: 44px;
+            border-radius: 50%; cursor: pointer; font-size: 1rem;
         }
+        .btn-main { background: var(--gold-primary); color: #000; font-size: 1.3rem; border: none; }
 
-        .btn-ctrl:hover {
-            background: rgba(212, 175, 55, 0.2);
-            color: #fff;
-            border-color: var(--gold-primary);
-        }
+        input[type="range"] { width: 100%; accent-color: var(--gold-primary); cursor: pointer; }
+        .time-display { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 
-        .btn-main {
-            width: 60px;
-            height: 60px;
-            font-size: 1.4rem;
-            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
-            color: #000;
-            border: none;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-        }
-
-        .btn-main:hover {
-            transform: scale(1.05);
-            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
-            color: #000;
-        }
-
-        /* Volume Control */
-        .volume-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 80%;
-            max-width: 200px;
-        }
-
-        .volume-box span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* Queue List Sidebar */
-        .queue-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(10px);
-            max-height: 450px;
-        }
-
-        .queue-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            color: var(--gold-primary);
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--border-gold);
-            padding-bottom: 8px;
-        }
-
-        .queue-list {
-            list-style: none;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-right: 5px;
-        }
-
-        .queue-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .queue-list::-webkit-scrollbar-thumb {
-            background: var(--gold-dark);
-            border-radius: 4px;
-        }
-
+        .queue-list { list-style: none; display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; }
         .queue-item {
-            padding: 10px 12px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.03);
+            display: flex; justify-content: space-between; cursor: pointer; font-size: 0.85rem;
         }
+        .queue-item.active { background: rgba(212, 175, 55, 0.2); border: 1px solid var(--gold-primary); }
 
-        .queue-item:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: rgba(212, 175, 55, 0.2);
-        }
-
-        .queue-item.active {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: var(--gold-primary);
-        }
-
-        .queue-item-info h4 {
-            font-size: 0.85rem;
-            color: var(--text-main);
-            margin-bottom: 3px;
-        }
-
-        .queue-item-info p {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-
-        .queue-item-duration {
-            font-size: 0.75rem;
-            color: var(--gold-primary);
-            font-family: monospace;
-        }
-
-        /* Soundboard Panel */
-        .soundboard-card {
-            grid-column: 1 / -1;
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            margin-top: 10px;
-        }
-
-        .soundboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-
+        .soundboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-top: 10px; }
         .btn-fx {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-gold);
-            color: var(--text-main);
-            padding: 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-fx:hover {
-            background: rgba(212, 175, 55, 0.2);
-            transform: translateY(-2px);
-            border-color: var(--gold-primary);
-        }
-
-        .btn-fx span {
-            font-size: 1.2rem;
-        }
-
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            letter-spacing: 1px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border-gold);
+            color: var(--text-main); padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.75rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- Splash Screen overlay to unlock audio context -->
     <div id="splash-overlay">
         <h1 class="splash-title">Beethoven Radio</h1>
-        <p class="splash-subtitle">Continuous Masterworks Stream • Public Domain Orchestral Recordings</p>
+        <p style="color: var(--text-muted);">Masterworks Streaming Engine</p>
         <button class="btn-enter" onclick="unlockAudio()">Enter Concert Hall</button>
     </div>
 
     <header>
         <h1>Beethoven Maestro Radio</h1>
-        <p>Continuous Symphony Stream & Acoustic Soundboard</p>
     </header>
 
     <div class="app-container">
-        <!-- Main Player UI -->
         <div class="player-card">
-            <div class="stage-box" id="vinyl-stage">
-                <canvas id="visualizer" width="180" height="180"></canvas>
-                <div class="vinyl-center">LvB</div>
-            </div>
-
+            <div class="stage-box" id="vinyl-stage">LvB</div>
             <div class="track-info">
-                <h2 class="track-title" id="track-title">Loading Stream...</h2>
-                <p class="track-movement" id="track-movement">Please wait</p>
+                <h2 class="track-title" id="track-title">Select Track</h2>
+                <p class="track-movement" id="track-movement">Concert Queue</p>
                 <span class="status-badge" id="status-badge">Standby</span>
             </div>
 
-            <div class="progress-box">
-                <input type="range" id="seek-bar" value="0" min="0" max="100" step="0.1" onchange="seekAudio(this.value)">
-                <div class="time-display">
-                    <span id="curr-time">0:00</span>
-                    <span id="dur-time">0:00</span>
-                </div>
+            <input type="range" id="seek-bar" value="0" min="0" max="100" onchange="seekAudio(this.value)">
+            <div class="time-display">
+                <span id="curr-time">0:00</span>
+                <span id="dur-time">0:00</span>
             </div>
 
             <div class="controls">
-                <button class="btn-ctrl" onclick="prevTrack()" title="Previous Track">⏮</button>
-                <button class="btn-ctrl btn-main" id="btn-play" onclick="togglePlay()" title="Play/Pause">▶</button>
-                <button class="btn-ctrl" onclick="nextTrack()" title="Next Track">⏭</button>
+                <button class="btn-ctrl" onclick="prevTrack()">⏮</button>
+                <button class="btn-ctrl btn-main" id="btn-play" onclick="togglePlay()">▶</button>
+                <button class="btn-ctrl" onclick="nextTrack()">⏭</button>
             </div>
 
-            <div class="volume-box">
-                <span>🔈</span>
+            <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                <span style="font-size:0.8rem;">🔈</span>
                 <input type="range" id="volume-bar" value="0.8" min="0" max="1" step="0.05" oninput="setVolume(this.value)">
-                <span>🔊</span>
+                <span style="font-size:0.8rem;">🔊</span>
             </div>
         </div>
 
-        <!-- Master Queue List -->
         <div class="queue-card">
-            <h3 class="queue-title">Concert Queue</h3>
+            <h3 style="font-family:'Cinzel'; color:var(--gold-primary); margin-bottom:10px;">Queue</h3>
             <ul class="queue-list" id="queue-list"></ul>
         </div>
 
-        <!-- Orchestral Soundboard -->
-        <div class="soundboard-card">
-            <h3 class="queue-title">Acoustic Soundboard Overlays</h3>
+        <div class="soundboard-card" style="grid-column: 1 / -1;">
+            <h3 style="font-family:'Cinzel'; color:var(--gold-primary); margin-bottom:10px;">Soundboard Overlays</h3>
             <div class="soundboard-grid">
-                <button class="btn-fx" onclick="playFX('timpani')"><span>🥁</span> Timpani Roll</button>
-                <button class="btn-fx" onclick="playFX('applause')"><span>👏</span> Hall Ovation</button>
-                <button class="btn-fx" onclick="playFX('harpsichord')"><span>🎹</span> Harpsichord Run</button>
-                <button class="btn-fx" onclick="playFX('violin')"><span>🎻</span> Violin Tremolo</button>
-                <button class="btn-fx" onclick="playFX('a440')"><span>🎵</span> A440 Tuning Pitch</button>
+                <button class="btn-fx" onclick="playFX('timpani')">🥁 Timpani Roll</button>
+                <button class="btn-fx" onclick="playFX('applause')">👏 Hall Ovation</button>
+                <button class="btn-fx" onclick="playFX('harpsichord')">🎹 Harpsichord</button>
+                <button class="btn-fx" onclick="playFX('violin')">🎻 Violin Tremolo</button>
+                <button class="btn-fx" onclick="playFX('a440')">🎵 A440 Pitch</button>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>Public Domain Classical Recordings • Streamed via Wikimedia Commons & Musopen</p>
-    </footer>
-
-    <!-- Native Audio Element -->
-    <audio id="audio-engine" crossorigin="anonymous" preload="auto"></audio>
+    <!-- HTML5 Audio Engine -->
+    <audio id="audio-engine" preload="auto"></audio>
 
     <script>
-        // Master Playlist - Public Domain Authentic Audio Streams
+        // Internet Archive Public Domain Streams (CORS Allowed)
         const playlist = [
             {
                 title: "Symphony No. 5 in C minor",
                 movement: "Op. 67 - I. Allegro con brio",
-                durationStr: "8:20",
-                url: "https://upload.wikimedia.org/wikipedia/commons/d/db/Ludwig_van_Beethoven_-_Symphony_No._5%2C_Op._67_-_I._Allegro_con_brio.ogg"
+                durationStr: "7:28",
+                url: "https://ia800301.us.archive.org/29/items/lp_symphony-no-5-in-c-minor-symphony-no-34-i_ludwig-van-beethoven-wolfgang-amadeus-moza/lp_symphony-no-5-in-c-minor-symphony-no-34-i_ludwig-van-beethoven-wolfgang-amadeus-moza_disc1side1.mp3"
             },
             {
                 title: "Piano Sonata No. 14 'Moonlight'",
                 movement: "Op. 27 No. 2 - I. Adagio sostenuto",
                 durationStr: "5:36",
-                url: "https://upload.wikimedia.org/wikipedia/commons/e/eb/Beethoven_Moonlight_sonata_first_movement.ogg"
-            },
-            {
-                title: "Symphony No. 9 'Choral'",
-                movement: "Op. 125 - IV. Presto - Allegro assai (Ode to Joy)",
-                durationStr: "11:30",
-                url: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Beethoven_Moonlight_sonata_second_movement.ogg"
-            },
-            {
-                title: "Bagatelle No. 25 'Für Elise'",
-                movement: "WoO 59 - Poco moto",
-                durationStr: "3:25",
-                url: "https://upload.wikimedia.org/wikipedia/commons/1/18/F%C3%BCr_Elise.ogg"
-            },
-            {
-                title: "Piano Sonata No. 8 'Pathétique'",
-                movement: "Op. 13 - II. Adagio cantabile",
-                durationStr: "5:10",
-                url: "https://upload.wikimedia.org/wikipedia/commons/8/87/Beethoven_Sonata_8_2nd_movement.ogg"
+                url: "https://ia800501.us.archive.org/31/items/lp_moonlight-sonata-number-14-in-c-opus-27-2_ludwig-van-beethoven/lp_moonlight-sonata-number-14-in-c-opus-27-2_ludwig-van-beethoven_disc1side1.mp3"
             }
         ];
 
         let currentIndex = 0;
         let isPlaying = false;
         let audioCtx = null;
-        let analyser = null;
-        let sourceNode = null;
 
         const audio = document.getElementById('audio-engine');
         const playBtn = document.getElementById('btn-play');
@@ -616,76 +248,41 @@
                 const li = document.createElement('li');
                 li.className = `queue-item ${idx === currentIndex ? 'active' : ''}`;
                 li.onclick = () => selectTrack(idx);
-                li.innerHTML = `
-                    <div class="queue-item-info">
-                        <h4>${track.title}</h4>
-                        <p>${track.movement}</p>
-                    </div>
-                    <div class="queue-item-duration">${track.durationStr}</div>
-                `;
+                li.innerHTML = `<div><strong>${track.title}</strong><br><small style="color:var(--text-muted)">${track.movement}</small></div><div>${track.durationStr}</div>`;
                 listEl.appendChild(li);
             });
         }
 
         function unlockAudio() {
             document.getElementById('splash-overlay').classList.add('hidden');
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            setupAudioNodes();
-            loadTrack(currentIndex, true);
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            loadTrack(0, true);
         }
 
-        function setupAudioNodes() {
-            if (sourceNode) return;
-            try {
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 64;
-                sourceNode = audioCtx.createMediaElementSource(audio);
-                sourceNode.connect(analyser);
-                analyser.connect(audioCtx.destination);
-                drawVisualizer();
-            } catch (e) {
-                console.log("Audio node binding deferred until user interaction.");
-            }
-        }
-
-        function loadTrack(index, autoPlay = false) {
-            currentIndex = index;
+        function loadTrack(idx, autoPlay = false) {
+            currentIndex = idx;
             const track = playlist[currentIndex];
             trackTitle.innerText = track.title;
             trackMovement.innerText = track.movement;
             statusBadge.innerText = "Buffering...";
             durTimeLabel.innerText = track.durationStr;
-            seekBar.value = 0;
-            currTimeLabel.innerText = "0:00";
-
             initQueueUI();
 
             audio.src = track.url;
             audio.load();
 
-            if (autoPlay) {
-                playAudio();
-            } else {
-                pauseAudio();
-            }
+            if (autoPlay) playAudio();
+            else pauseAudio();
         }
 
         function playAudio() {
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
             audio.play().then(() => {
                 isPlaying = true;
                 playBtn.innerText = '⏸';
                 statusBadge.innerText = 'Streaming';
                 vinylStage.classList.add('playing');
-            }).catch(err => {
-                console.warn("Playback prevented or streaming delay:", err);
+            }).catch(() => {
                 statusBadge.innerText = 'Tap Play';
                 isPlaying = false;
                 playBtn.innerText = '▶';
@@ -700,193 +297,39 @@
             vinylStage.classList.remove('playing');
         }
 
-        function togglePlay() {
-            if (isPlaying) {
-                pauseAudio();
-            } else {
-                playAudio();
-            }
-        }
+        function togglePlay() { isPlaying ? pauseAudio() : playAudio(); }
+        function nextTrack() { loadTrack((currentIndex + 1) % playlist.length, true); }
+        function prevTrack() { loadTrack((currentIndex - 1 + playlist.length) % playlist.length, true); }
+        function selectTrack(idx) { loadTrack(idx, true); }
+        function seekAudio(val) { if (audio.duration) audio.currentTime = (val / 100) * audio.duration; }
+        function setVolume(val) { audio.volume = val; }
 
-        function nextTrack() {
-            currentIndex = (currentIndex + 1) % playlist.length;
-            loadTrack(currentIndex, true);
-        }
-
-        function prevTrack() {
-            currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-            loadTrack(currentIndex, true);
-        }
-
-        function selectTrack(idx) {
-            if (currentIndex === idx && isPlaying) return;
-            loadTrack(idx, true);
-        }
-
-        function seekAudio(val) {
-            if (audio.duration) {
-                audio.currentTime = (val / 100) * audio.duration;
-            }
-        }
-
-        function setVolume(val) {
-            audio.volume = val;
-        }
-
-        // Time updates & Continuous auto-advance
         audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
-                const pct = (audio.currentTime / audio.duration) * 100;
-                seekBar.value = pct;
-                
-                const mins = Math.floor(audio.currentTime / 60);
-                const secs = Math.floor(audio.currentTime % 60);
-                currTimeLabel.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-
-                const dMins = Math.floor(audio.duration / 60);
-                const dSecs = Math.floor(audio.duration % 60);
-                durTimeLabel.innerText = `${dMins}:${dSecs < 10 ? '0' : ''}${dSecs}`;
+                seekBar.value = (audio.currentTime / audio.duration) * 100;
+                const m = Math.floor(audio.currentTime / 60);
+                const s = Math.floor(audio.currentTime % 60);
+                currTimeLabel.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
             }
         });
 
-        audio.addEventListener('ended', () => {
-            nextTrack();
-        });
+        audio.addEventListener('ended', nextTrack);
+        audio.addEventListener('error', () => { statusBadge.innerText = 'Stream Unavailable'; });
 
-        audio.addEventListener('error', () => {
-            statusBadge.innerText = 'Stream Retrying...';
-            setTimeout(() => {
-                if(isPlaying) audio.play();
-            }, 3000);
-        });
-
-        // Real-Time Canvas Spectrum Visualizer
-        function drawVisualizer() {
-            const canvas = document.getElementById('visualizer');
-            const ctx = canvas.getContext('2d');
-            
-            function render() {
-                requestAnimationFrame(render);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                if (!analyser || !isPlaying) return;
-
-                const bufferLength = analyser.frequencyBinCount;
-                const dataArray = new Uint8Array(bufferLength);
-                analyser.getByteFrequencyData(dataArray);
-
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                const radius = 65;
-
-                ctx.beginPath();
-                ctx.strokeStyle = '#d4af37';
-                ctx.lineWidth = 2;
-
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = (dataArray[i] / 255) * 20;
-                    const angle = (i * 2 * Math.PI) / bufferLength;
-                    const x = centerX + Math.cos(angle) * (radius + barHeight);
-                    const y = centerY + Math.sin(angle) * (radius + barHeight);
-
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.closePath();
-                ctx.stroke();
-            }
-            render();
-        }
-
-        // Acoustic Soundboard Web Audio Synthesizer Effects
         function playFX(type) {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-
             const now = audioCtx.currentTime;
-
-            if (type === 'timpani') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(110, now);
-                osc.frequency.exponentialRampToValueAtTime(50, now + 0.8);
-                gain.gain.setValueAtTime(0.8, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.8);
-            } else if (type === 'applause') {
-                const bufferSize = audioCtx.sampleRate * 1.5;
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = Math.random() * 2 - 1;
-                }
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.value = 1000;
-                const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
-                noise.connect(filter);
-                filter.connect(gain);
-                gain.connect(audioCtx.destination);
-                noise.start(now);
-            } else if (type === 'harpsichord') {
-                [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'sawtooth';
-                    osc.frequency.value = freq;
-                    gain.gain.setValueAtTime(0.2, now + i * 0.08);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.4);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(now + i * 0.08);
-                    osc.stop(now + i * 0.08 + 0.4);
-                });
-            } else if (type === 'violin') {
-                const osc = audioCtx.createOscillator();
-                const lfo = audioCtx.createOscillator();
-                const lfoGain = audioCtx.createGain();
-                const gain = audioCtx.createGain();
-
-                osc.type = 'sawtooth';
-                osc.frequency.value = 440;
-                lfo.frequency.value = 6; // Tremolo/Vibrato speed
-                lfoGain.gain.value = 10;
-
-                lfo.connect(osc.frequency);
-                gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.25, now + 0.2);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                lfo.start(now);
-                osc.start(now);
-                osc.stop(now + 1.5);
-                lfo.stop(now + 1.5);
-            } else if (type === 'a440') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = 440;
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 2.0);
-            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.value = type === 'timpani' ? 110 : 440;
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 1.0);
         }
 
-        // Initialize UI
         initQueueUI();
     </script>
 </body>
